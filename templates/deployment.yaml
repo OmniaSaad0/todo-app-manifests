@@ -20,12 +20,12 @@ spec:
         image: {{ .Values.app.image }}
         imagePullPolicy: {{ .Values.app.imagePullPolicy }}
         ports:
-        - containerPort: {{ .Values.app.port }}
+        - containerPort: {{ .Values.app_config.port }}
         env:
         - name: PORT
-          value: {{ .Values.app.port }}
+          value: {{ .Values.app_config.port }}
         - name: mongoDbUrl
-          value: {{ .Values.app.mongoDbUrl }}
+          value: {{ .Values.app_config.mongoDbUrl }}
         resources:
           limits:
             cpu: 200m
