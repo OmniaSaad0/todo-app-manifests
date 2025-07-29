@@ -1,79 +1,37 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "todo-app.fullname" . }}
-  namespace: {{ .Release.Namespace }}
-  labels:
-    {{- include "todo-app.labels" . | nindent 4 }}
-  annotations:
-    argocd-image-updater.argoproj.io/image-list: todo-app={{ .Values.image.repository }}
-    argocd-image-updater.argoproj.io/write-back-method: git
-    argocd-image-updater.argoproj.io/git-branch: main
-    argocd-image-updater.argoproj.io/update-strategy: latest
-    argocd-image-updater.argoproj.io/force-update: "false"
+  name: todo-app
+  namespace: todo-app
+  # annotations:
+  #   argocd-image-updater.argoproj.io/image-list: todo-app=todo-app
+  #   argocd-image-updater.argoproj.io/write-back-method: git
+  #   argocd-image-updater.argoproj.io/git-branch: master
+  #   argocd-image-updater.argoproj.io/update-strategy: latest
 spec:
-  replicas: {{ .Values.replicaCount }}
+  replicas: 2
   selector:
     matchLabels:
-      {{- include "todo-app.selectorLabels" . | nindent 6 }}
+      app: todo-app
   template:
     metadata:
       labels:
-        {{- include "todo-app.selectorLabels" . | nindent 8 }}
-      {{- with .Values.podAnnotations }}
-      annotations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+        app: todo-app
     spec:
-      {{- with .Values.imagePullSecrets }}
-      imagePullSecrets:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      serviceAccountName: {{ include "todo-app.serviceAccountName" . }}
-      securityContext:
-        {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
-        - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
-          ports:
-            - name: http
-              containerPort: {{ .Values.app.port }}
-              protocol: TCP
-          env:
-            - name: PORT
-              valueFrom:
-                configMapKeyRef:
-                  name: {{ include "todo-app.fullname" . }}-config
-                  key: PORT
-            - name: mongoDbUrl
-              valueFrom:
-                configMapKeyRef:
-                  name: {{ include "todo-app.fullname" . }}-config
-                  key: mongoDbUrl
-          livenessProbe:
-            httpGet:
-              path: /
-              port: {{ .Values.app.port }}
-            initialDelaySeconds: 30
-            periodSeconds: 10
-          readinessProbe:
-            httpGet:
-              path: /
-              port: {{ .Values.app.port }}
-            initialDelaySeconds: 5
-            periodSeconds: 5
-          resources:
-            {{- toYaml .Values.resources | nindent 12 }}
-      {{- with .Values.nodeSelector }}
-      nodeSelector:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.affinity }}
-      affinity:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.tolerations }}
-      tolerations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }} 
+      - name: todo-app
+        image: "todo-app:latest"
+        ports:
+        - containerPort: 4000
+        env:
+        - name: PORT
+          value: "4000"
+        - name: mongoDbUrl
+          value: "mongodb://admin:pass@todo-app-mongodb:27017/todo-list?authSource=admin"
+        resources:
+          limits:
+            cpu: 200m
+            memory: 256Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi 

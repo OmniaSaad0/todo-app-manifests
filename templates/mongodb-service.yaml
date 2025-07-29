@@ -1,19 +1,13 @@
-{{- if .Values.mongodb.enabled }}
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "todo-app.fullname" . }}-mongodb
-  namespace: {{ .Release.Namespace }}
-  labels:
-    {{- include "todo-app.labels" . | nindent 4 }}
-    app: mongodb
+  name: todo-app-mongodb
+  namespace: todo-app
 spec:
-  type: {{ .Values.mongodb.service.type }}
+  type: ClusterIP
   ports:
-    - port: {{ .Values.mongodb.service.port }}
+    - port: 27017
       targetPort: 27017
       protocol: TCP
-      name: mongodb
   selector:
-    app: mongodb
-{{- end }} 
+    app: mongodb 

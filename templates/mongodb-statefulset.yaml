@@ -1,14 +1,10 @@
-{{- if .Values.mongodb.enabled }}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: {{ include "todo-app.fullname" . }}-mongodb
-  namespace: {{ .Release.Namespace }}
-  labels:
-    {{- include "todo-app.labels" . | nindent 4 }}
-    app: mongodb
+  name: todo-app-mongodb
+  namespace: todo-app
 spec:
-  serviceName: {{ include "todo-app.fullname" . }}-mongodb
+  serviceName: todo-app-mongodb
   replicas: 1
   selector:
     matchLabels:
@@ -20,32 +16,19 @@ spec:
     spec:
       containers:
       - name: mongodb
-        image: "{{ .Values.mongodb.image.repository }}:{{ .Values.mongodb.image.tag }}"
-        imagePullPolicy: {{ .Values.mongodb.image.pullPolicy }}
+        image: "mongo:6.0"
         ports:
         - containerPort: 27017
         env:
         - name: MONGO_INITDB_DATABASE
-          value: {{ .Values.mongodb.auth.database | quote }}
+          value: "todo-list"
         - name: MONGO_INITDB_ROOT_USERNAME
-          value: {{ .Values.mongodb.auth.rootUsername | quote }}
+          value: "admin"
         - name: MONGO_INITDB_ROOT_PASSWORD
-          value: {{ .Values.mongodb.auth.rootPassword | quote }}
+          value: "pass"
         volumeMounts:
         - name: mongodb-data
           mountPath: /data/db
-        resources:
-          {{- toYaml .Values.mongodb.resources | nindent 10 }}
-        livenessProbe:
-          tcpSocket:
-            port: 27017
-          initialDelaySeconds: 30
-          periodSeconds: 10
-        readinessProbe:
-          tcpSocket:
-            port: 27017
-          initialDelaySeconds: 5
-          periodSeconds: 5
   volumeClaimTemplates:
   - metadata:
       name: mongodb-data
@@ -53,6 +36,4 @@ spec:
       accessModes: ["ReadWriteOnce"]
       resources:
         requests:
-          storage: {{ .Values.mongodb.persistence.size }}
-      storageClassName: {{ .Values.mongodb.persistence.storageClass }}
-{{- end }} 
+          storage: 1Gi 

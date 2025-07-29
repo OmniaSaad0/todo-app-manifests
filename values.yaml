@@ -1,4 +1,4 @@
-# Default values for todo-app
+# Simple Todo App Configuration
 replicaCount: 2
 
 image:
@@ -6,36 +6,10 @@ image:
   tag: "latest"
   pullPolicy: IfNotPresent
 
-imagePullSecrets: []
-nameOverride: ""
-fullnameOverride: ""
-
-serviceAccount:
-  create: true
-  annotations: {}
-  name: ""
-
-podAnnotations: {}
-
-podSecurityContext: {}
-
-securityContext: {}
-
 service:
   type: LoadBalancer
   port: 80
   targetPort: 4000
-
-ingress:
-  enabled: false
-  className: ""
-  annotations: {}
-  hosts:
-    - host: todo-app.local
-      paths:
-        - path: /
-          pathType: ImplementationSpecific
-  tls: []
 
 resources:
   limits:
@@ -45,45 +19,19 @@ resources:
     cpu: 100m
     memory: 128Mi
 
-autoscaling:
-  enabled: false
-  minReplicas: 1
-  maxReplicas: 100
-  targetCPUUtilizationPercentage: 80
-
-nodeSelector: {}
-
-tolerations: []
-
-affinity: {}
-
 # MongoDB Configuration
 mongodb:
   enabled: true
   image:
     repository: mongo
     tag: "6.0"
-    pullPolicy: IfNotPresent
-  
   auth:
-    enabled: true
     rootUsername: admin
     rootPassword: pass
     database: todo-list
-  
   persistence:
     enabled: true
-    storageClass: "standard"
     size: 1Gi
-  
-  resources:
-    limits:
-      cpu: 500m
-      memory: 512Mi
-    requests:
-      cpu: 250m
-      memory: 256Mi
-  
   service:
     type: ClusterIP
     port: 27017
@@ -91,18 +39,4 @@ mongodb:
 # Application Configuration
 app:
   port: 4000
-  mongoDbUrl: "mongodb://admin:pass@{{ .Release.Name }}-mongodb:27017/todo-list?authSource=admin"
-
-# ArgoCD Application Configuration
-argocd:
-  enabled: false
-  namespace: argocd
-  project: default
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
-      - PrunePropagationPolicy=foreground
-      - PruneLast=true 
+  mongoDbUrl: "mongodb://admin:pass@{{ .Release.Name }}-mongodb:27017/todo-list?authSource=admin" 
