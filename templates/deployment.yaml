@@ -20,10 +20,10 @@ spec:
         image: {{ .Values.app.image }}
         imagePullPolicy: {{ .Values.app.imagePullPolicy }}
         ports:
-        - containerPort: {{ .Values.app_config.port }}
+        - containerPort: 4000
         env:
         - name: PORT
-          value: {{ .Values.app_config.port }}
+          value: "{{ .Values.app_config.port }}"
         - name: mongoDbUrl
           value: {{ .Values.app_config.mongoDbUrl }}
         resources:

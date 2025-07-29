@@ -40,4 +40,4 @@ mongodb:
 # Application Configuration
 app_config:
   port: 4000
-  mongoDbUrl: "mongodb://admin:pass@{{ .Release.Name }}-mongodb:27017/todo-list?authSource=admin" 
+  mongoDbUrl: "mongodb://admin:pass@todo-app-mongodb:27017/todo-list?authSource=admin" 
