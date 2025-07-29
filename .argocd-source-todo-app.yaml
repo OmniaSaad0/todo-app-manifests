@@ -1,0 +1,8 @@
+helm:
+  parameters:
+  - name: image.name
+    value: omniasaad/todo-app
+    forcestring: true
+  - name: image.tag
+    value: 20250730-0147
+    forcestring: true
