@@ -13,9 +13,12 @@ spec:
       labels:
         app: todo-app
     spec:
+      imagePullSecrets:
+      - name: docker-registry-secret
       containers:
       - name: todo-app
         image: "todo-app:20250727-2309"
+        imagePullPolicy: Always
         ports:
         - containerPort: 4000
         env:
