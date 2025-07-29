@@ -1,9 +1,10 @@
 # Simple Todo App Configuration
 replicaCount: 2
 
-image:
-  repository: todo-app
-  tag: "latest"
+app:  
+  image: omniasaad0/todo-app:20250727-2309
+
+  imagePullPolicy: Always
   pullPolicy: IfNotPresent
 
 service:
@@ -37,6 +38,6 @@ mongodb:
     port: 27017
 
 # Application Configuration
-app:
+app_config:
   port: 4000
   mongoDbUrl: "mongodb://admin:pass@{{ .Release.Name }}-mongodb:27017/todo-list?authSource=admin" 

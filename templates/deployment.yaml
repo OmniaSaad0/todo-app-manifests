@@ -17,15 +17,15 @@ spec:
       - name: docker-registry-secret
       containers:
       - name: todo-app
-        image: "todo-app:20250727-2309"
-        imagePullPolicy: Always
+        image: {{ .Values.app.image }}
+        imagePullPolicy: {{ .Values.app.imagePullPolicy }}
         ports:
-        - containerPort: 4000
+        - containerPort: {{ .Values.app.port }}
         env:
         - name: PORT
-          value: "4000"
+          value: {{ .Values.app.port }}
         - name: mongoDbUrl
-          value: "mongodb://admin:pass@todo-app-mongodb:27017/todo-list?authSource=admin"
+          value: {{ .Values.app.mongoDbUrl }}
         resources:
           limits:
             cpu: 200m
