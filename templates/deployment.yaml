@@ -3,11 +3,6 @@ kind: Deployment
 metadata:
   name: todo-app
   namespace: todo-app
-  # annotations:
-  #   argocd-image-updater.argoproj.io/image-list: todo-app=todo-app
-  #   argocd-image-updater.argoproj.io/write-back-method: git
-  #   argocd-image-updater.argoproj.io/git-branch: master
-  #   argocd-image-updater.argoproj.io/update-strategy: latest
 spec:
   replicas: 2
   selector:
