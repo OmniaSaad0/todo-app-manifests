@@ -2,7 +2,7 @@
 replicaCount: 2
 
 app:  
-  image: omniasaad0/todo-app:20250727-2309
+  image: omniasaad/todo-app:20250727-2309
 
   imagePullPolicy: Always
   pullPolicy: IfNotPresent
