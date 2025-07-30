@@ -1,5 +1,5 @@
 helm:
   parameters:
   - name: app.image
-    value: omniasaad/todo-app:20250730-0231
+    value: omniasaad/todo-app:20250730-2116
     forcestring: true
