@@ -1,21 +1,23 @@
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: todo-app-ingress
-  namespace: todo-app
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
-    nginx.ingress.kubernetes.io/ssl-redirect: "false"
-spec:
-  ingressClassName: nginx
-  rules:
-  - host: todo-app.local
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: todo-app
-            port:
-              number: 80 
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: todo-app-ingress
+#   namespace: todo-app
+#   annotations:
+#     nginx.ingress.kubernetes.io/rewrite-target: /
+#     nginx.ingress.kubernetes.io/ssl-redirect: "false"
+#     # Add your load balancer IP here
+#     # nginx.ingress.kubernetes.io/load-balancer-ip: "YOUR_LOAD_BALANCER_IP"
+# spec:
+#   ingressClassName: nginx
+#   rules:
+#   - host: todo-app.local
+#     http:
+#       paths:
+#       - path: /
+#         pathType: Prefix
+#         backend:
+#           service:
+#             name: todo-app
+#             port:
+#               number: 80 
